@@ -13,6 +13,11 @@
     {
         <li><b>Birthdate: </b>@Model.Birthdate.Value.ToShortDateString()</li>
     }
+    @if (Model.IsSubscribedToNewsletter)
+    {
+        <li><b>Subscribed to Newsletter: </b>Yes</li>
+    } else
+    {
+        <li><b>Subscribed to Newsletter: </b>No</li>
+    }
 </ul>
-
-
