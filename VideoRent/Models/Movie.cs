@@ -16,7 +16,7 @@ namespace VideoRent.Models
 
         [Required(ErrorMessage = "Please enter movie's release date.")]
         [Display(Name = "Release Date")]
-        public DateTime? RealeaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         [Required(ErrorMessage = "Please select movie's genre.")]
         [Display(Name = "Genre")]
