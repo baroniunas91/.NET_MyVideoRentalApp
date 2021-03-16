@@ -27,7 +27,7 @@ namespace VideoRent.Controllers
         // GET: Customers
         public ViewResult Index()
         {
-            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
+            var customers = _context.Customers.Include(c => c.MembershipType).OrderBy(x => x.Name).ToList();
 
             return View(customers);
         }
