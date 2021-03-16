@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<VideoRent.Models.Movie>
-@{ 
+@{
     ViewBag.Title = "Movies";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,7 +11,10 @@
     <p>We don't have any movies yet.</p>
 }
 
-<!-- TODO: "Add Movie" button -->
+<p>
+    @Html.ActionLink("New Movie", "New", "Movies", null, new { @class = "btn btn-primary" })
+</p>
+<br />
 
 <table class="table table-bordered table-hover" style="width:40%">
     <thead>

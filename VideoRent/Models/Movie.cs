@@ -16,17 +16,19 @@ namespace VideoRent.Models
 
         [Required(ErrorMessage = "Please enter movie's release date.")]
         [Display(Name = "Release Date")]
-        public DateTime? RealeaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         [Required(ErrorMessage = "Please select movie's genre.")]
         [Display(Name = "Genre")]
-        public byte GenreId { get; set; }
+        public byte? GenreId { get; set; }
 
+        [Required(ErrorMessage = "Please select movie's genre.")]
         [Display(Name = "Number in Stock")]
-        public int NumberInStock { get; set; } = 0;
+        public int? NumberInStock { get; set; } = 0;
 
+        [Required(ErrorMessage = "Please select movie's genre.")]
         [Display(Name = "Number Available")]
-        public int NumberAvailable { get; set; } = 0;
+        public int? NumberAvailable { get; set; } = 0;
 
         public Genre Genre { get; set; }
 

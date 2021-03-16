@@ -1,0 +1,40 @@
+﻿@model VideoRent.ViewModels.MovieFormViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Movie</h2>
+
+@using (Html.BeginForm("Save", "Movies"))
+{
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Movie.Name)
+        @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Movie.ReleaseDate)
+        @Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:yyyy MM dd}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.ReleaseDate, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Movie.GenreId)
+        @Html.DropDownListFor(m => m.Movie.GenreId, new SelectList(@Model.Genres, "Id", "Name"), "Select genre", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.GenreId, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Movie.NumberInStock)
+        @Html.TextBoxFor(m => m.Movie.NumberInStock, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.NumberInStock, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Movie.NumberAvailable)
+        @Html.TextBoxFor(m => m.Movie.NumberAvailable, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Movie.NumberAvailable, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.HiddenFor(m => m.Movie.Id)
+    @Html.HiddenFor(m => m.Movie.DateAdded)
+    <button type="submit" class="btn btn-primary">Save</button>
+}
