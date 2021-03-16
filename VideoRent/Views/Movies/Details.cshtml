@@ -1,0 +1,26 @@
+﻿@model VideoRent.Models.Movie
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+<br />
+
+<ul>
+    <li><b>Genre:</b> @Model.Genre.Name</li>
+    <li><b>Release Date:</b> @Model.ReleaseDate.Value.ToShortDateString()</li>
+    <li><b>Date Added:</b> @Model.DateAdded.ToShortDateString()</li>
+    <li><b>Number in stock:</b> @Model.NumberInStock</li>
+    <li><b>Number available:</b> @Model.NumberAvailable</li>
+</ul>
+
+<br />
+
+<p>
+    @Html.ActionLink("Edit", "Edit", "Movies", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Delete", "Delete", "Movies", null, new { @class = "btn btn-primary" })
+</p>
+   
