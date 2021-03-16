@@ -14,12 +14,12 @@
     @Html.ActionLink("New Customer", "New", "Customers", null, new { @class = "btn btn-primary" })
 </p>
 <br />
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" style="width:40%">
     <thead>
         <tr>
-            <th>Customer</th>
-            <th>Discount Rate</th>
-            <th>Membership Type</th>
+            <th style="text-align:center">Customer</th>
+            <th style="width:15%; text-align:center">Discount Rate</th>
+            <th style="width:35%; text-align:center">Membership Type</th>
         </tr>
     </thead>
     <tbody>
@@ -27,10 +27,9 @@
         {
             <tr>
                 <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
-                <td>@customer.MembershipType.DiscountRate%</td>
+                <td style="text-align:center">@customer.MembershipType.DiscountRate%</td>
                 <td>@customer.MembershipType.Name</td>
             </tr>
         }
     </tbody>
 </table>
-
