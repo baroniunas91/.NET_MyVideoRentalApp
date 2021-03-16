@@ -59,7 +59,11 @@ namespace VideoRent.Controllers
 
             if (customer.Id == 0)
             {
-                _context.Customers.Add(customer); 
+                _context.Customers.Add(customer);
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Customers");
             }
             else
             {
@@ -69,11 +73,11 @@ namespace VideoRent.Controllers
                 customerInDb.Birthdate = customer.Birthdate;
                 customerInDb.MembershipTypeId = customer.MembershipTypeId;
                 customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Details", "Customers", new { id = customerInDb.Id } );
             }
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Index", "Customers");
         }
 
         public ActionResult Edit(int id)
@@ -102,6 +106,22 @@ namespace VideoRent.Controllers
                 return NotFound();
 
             return View(customer);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            _context.Customers.Remove(customer);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

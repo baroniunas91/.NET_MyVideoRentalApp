@@ -16,8 +16,13 @@
     @if (Model.IsSubscribedToNewsletter)
     {
         <li><b>Subscribed to Newsletter: </b>Yes</li>
-    } else
+    }
+    else
     {
         <li><b>Subscribed to Newsletter: </b>No</li>
     }
 </ul>
+<p>
+    @Html.ActionLink("Edit", "Edit", "Customers", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Delete", "Delete", "Customers", new { id = Model.Id }, new { @class = "btn btn-primary" })
+</p>
