@@ -1,0 +1,22 @@
+﻿@model VideoRent.ViewModels.RentalFormViewModel
+@{
+    ViewBag.Title = "New movie rent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="margin-bottom:25px;">Movies Rent Form</h2>
+
+@using (Html.BeginForm("Save", "Rentals"))
+{
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.RentalDto.CustomerId)
+        @Html.DropDownListFor(m => m.RentalDto.CustomerId, new SelectList(@Model.Customers, "Id", "Name"), "Select customer", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RentalDto.CustomerId, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.RentalDto.MovieId)
+        @Html.DropDownListFor(m => m.RentalDto.MovieId, new SelectList(@Model.Movies, "Id", "Name"), "Select movie", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RentalDto.MovieId, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+}

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VideoRent.Data;
 
 namespace VideoRent.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210317102632_UpdateRentalTable")]
+    partial class UpdateRentalTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,9 +277,13 @@ namespace VideoRent.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CustomerId");
+                    b.Property<byte>("CustomerId");
 
-                    b.Property<int?>("MovieId");
+                    b.Property<int?>("CustomerId1");
+
+                    b.Property<byte>("MovieId");
+
+                    b.Property<int?>("MovieId1");
 
                     b.Property<DateTime>("RentedOn");
 
@@ -287,9 +293,9 @@ namespace VideoRent.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId1");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MovieId1");
 
                     b.ToTable("Rentals");
                 });
@@ -359,11 +365,11 @@ namespace VideoRent.Data.Migrations
                 {
                     b.HasOne("VideoRent.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId1");
 
                     b.HasOne("VideoRent.Models.Movie", "Movie")
                         .WithMany()
-                        .HasForeignKey("MovieId");
+                        .HasForeignKey("MovieId1");
                 });
 #pragma warning restore 612, 618
         }
