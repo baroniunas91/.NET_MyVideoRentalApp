@@ -33,6 +33,8 @@ namespace VideoRent.Controllers
                 Movie = new Movie(),
                 Genres = _context.Genres.ToList()
             };
+
+            ViewBag.TitleMessage = "New Movie";
             return View("MovieForm", movieFormViewModel);
         }
 
@@ -52,22 +54,22 @@ namespace VideoRent.Controllers
             if(movie.Id == 0)
             {
                 _context.Movies.Add(movie);
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Movies");
             }
-            else
-            {
-                var movieInDb = _context.Movies.Include(m => m.Genre).Single(m => m.Id == movie.Id);
 
-                movieInDb.Name = movie.Name;
-                movieInDb.ReleaseDate = movie.ReleaseDate;
-                movieInDb.NumberInStock = movie.NumberInStock;
-                movieInDb.NumberAvailable = movie.NumberAvailable;
-                movieInDb.GenreId = movie.GenreId;
-                movieInDb.DateAdded = DateTime.Now;
-            }
+            var movieInDb = _context.Movies.Include(m => m.Genre).Single(m => m.Id == movie.Id);
+
+            movieInDb.Name = movie.Name;
+            movieInDb.ReleaseDate = movie.ReleaseDate;
+            movieInDb.NumberInStock = movie.NumberInStock;
+            movieInDb.NumberAvailable = movie.NumberAvailable;
+            movieInDb.GenreId = movie.GenreId;
+            movieInDb.DateAdded = DateTime.Now;
 
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Movies");
+            return RedirectToAction("Details", "Movies", new { Id = movie.Id });         
         }
 
         public IActionResult Details(int id)
@@ -80,6 +82,25 @@ namespace VideoRent.Controllers
             }
 
             return View(movie);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
+
+            if(movie == null)
+            {
+                return NotFound();
+            }
+
+            var movieFormViewModel = new MovieFormViewModel
+            {
+                Movie = movie,
+                Genres = _context.Genres.ToList()
+            };
+
+            ViewBag.TitleMessage = "Edit Movie";
+            return View("MovieForm", movieFormViewModel);
         }
     }
 }

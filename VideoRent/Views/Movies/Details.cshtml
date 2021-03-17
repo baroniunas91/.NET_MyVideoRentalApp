@@ -20,7 +20,7 @@
 <br />
 
 <p>
-    @Html.ActionLink("Edit", "Edit", "Movies", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Delete", "Delete", "Movies", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Edit", "Edit", "Movies", new { id = Model.Id } , new { @class = "btn btn-primary" })
+    @Html.ActionLink("Delete", "Delete", "Movies", new { id = Model.Id }, new { @class = "btn btn-primary" })
 </p>
    
