@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using VideoRent.Models;
 
 namespace VideoRent.ViewModels
 {
@@ -14,5 +15,6 @@ namespace VideoRent.ViewModels
         public bool SearchByName { get; set; }
         [Display(Name = "Search by Genre")]
         public bool SearchByGenre { get; set; }
+        public IEnumerable<Customer> FoundCustomers { get; set; }
     }
 }
