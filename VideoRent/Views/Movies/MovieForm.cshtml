@@ -4,7 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.TitleMessage</h2>
+<h2>@Model.TitleMessage</h2>
+
+@{TempData["TitleMessage"] = Model.TitleMessage;}
 
 @using (Html.BeginForm("Save", "Movies"))
 {

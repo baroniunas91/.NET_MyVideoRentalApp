@@ -22,11 +22,11 @@ namespace VideoRent.Models
         [Display(Name = "Genre")]
         public byte? GenreId { get; set; }
 
-        [Required(ErrorMessage = "Please select movie's genre.")]
+        [Required(ErrorMessage = "Please select movie's number in stock.")]
         [Display(Name = "Number in Stock")]
         public int? NumberInStock { get; set; } = 0;
 
-        [Required(ErrorMessage = "Please select movie's genre.")]
+        [Required(ErrorMessage = "Please select number of available movies.")]
         [Display(Name = "Number Available")]
         public int? NumberAvailable { get; set; } = 0;
 
