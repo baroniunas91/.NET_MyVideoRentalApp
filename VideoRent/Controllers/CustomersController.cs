@@ -124,9 +124,5 @@ namespace VideoRent.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Search()
-        {
-            return View();
-        }
     }
 }
