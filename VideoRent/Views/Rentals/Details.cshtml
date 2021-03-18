@@ -9,12 +9,18 @@
 <br />
 <ul>
     <li><b>Number: </b>@Model.Id</li>
-    <li><b>Rented on: </b>@Model.RentedOn.ToString("yyyy-MM-dd H:m:s")</li>
+    <li><b>Rented on: </b>@Model.RentedOn.ToString("yyyy-MM-dd HH:mm:ss")</li>
     <li><b>Customer: </b>@Model.Customer.Name</li>
     <li><b>Movie: </b>@Model.Movie.Name</li>
     <li><b>Returned: </b>@(Model.Returned ? "Yes" : "No")</li>
     @if (Model.ReturnedOn != null)
     {
-        <li><b>Returned on: </b>@Model.Returned</li>
+        <li><b>Returned on: </b>@Model.ReturnedOn</li>
     }
 </ul>
+@if (!Model.Returned)
+{
+    <p>
+        @Html.ActionLink("Return", "Return", "Rentals", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </p>
+}
