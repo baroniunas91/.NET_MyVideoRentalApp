@@ -1,10 +1,17 @@
 ﻿@model VideoRent.ViewModels.CustomerFormViewModel
 @{
-    ViewBag.Title = "New";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>New customer</h2>
+@if (Model.Customer.Id != 0)
+{
+    ViewBag.Title = "Edit";
+    <h2>Edit customer</h2>
+}
+else
+{
+    ViewBag.Title = "New";
+    <h2>New customer</h2>
+}
 
 @using (Html.BeginForm("Save", "Customers"))
 {
