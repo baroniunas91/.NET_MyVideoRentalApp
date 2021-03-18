@@ -14,18 +14,19 @@
         <button name="SearchButton" value="customer" type="submit">Search</button>
     </div>
 
-    @if (ViewContext.HttpContext.Request.Query["SearchButton"] == "customer")
+
+    @if (Model.FoundCustomers != null && Model.FoundCustomers.Any())
     {
-        if (Model.FoundCustomers.Any())
-        {
-            <ul>
-                @foreach (var customer in Model.FoundCustomers)
-                {
-                    <li>@Html.ActionLink(customer.Name, "Details", "Customers", new { Id = customer.Id }, null)</li>
-                }
-            </ul>
-        }
-        else
+        <ul>
+            @foreach (var customer in Model.FoundCustomers)
+            {
+                <li>@Html.ActionLink(customer.Name, "Details", "Customers", new { Id = customer.Id }, null)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        @if (ViewContext.HttpContext.Request.Query["SearchButton"] == "customer")
         {
             <b>No records found.</b>
         }
@@ -36,14 +37,56 @@
 
     <b>Movies</b>
 
+
     <div class="form-group" style="width:20%">
-        @Html.CheckBoxFor(m => m.SearchByName)
-        @Html.LabelFor(m => m.SearchByName)
-        <br />
-        @Html.CheckBoxFor(m => m.SearchByGenre)
-        @Html.LabelFor(m => m.SearchByGenre)
-        <input type="search" class="form-control" asp-for="MovieName" />
-        <br />
+        @Html.ValidationMessage("OneOfCheckBoxesChecked", "", new { @class = "text-danger" })
+        <div>
+            @Html.CheckBoxFor(m => m.SearchByName)
+            @Html.LabelFor(m => m.SearchByName)
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.SearchByGenre)
+            @Html.LabelFor(m => m.SearchByGenre)
+            <input type="search" class="form-control" asp-for="MovieName" />
+        </div>
         <button name="SearchButton" value="movie" type="submit">Search</button>
     </div>
+
+    @if (Model.FoundMovies != null && Model.FoundMovies.Any())
+    {
+        <ul>
+            @foreach (var movie in Model.FoundMovies)
+            {
+                <li>@Html.ActionLink(movie.Name, "Details", "Movies", new { Id = movie.Id }, null)</li>
+            }
+        </ul>
+    }
+    else
+    {
+        @if (ViewContext.HttpContext.Request.Query["SearchButton"] == "movie")
+        {
+            <b>No records found.</b>
+        }
+    }
+
+    <!-- <input> and not Html.HiddenFor because of bug when sometimes previously saved and changed models still remained in next request -->
+    <!-- similar problem: https://stackoverflow.com/questions/18410279/is-hiddenfor-works-incorrectly-when-i-clear-list-item -->
+    @if (Model.FoundMovies != null)
+    {
+        for (int i = 0; i < Model.FoundMovies.Count; i++)
+        {
+            <input type="hidden" name="FoundMovies[@i].Id" value="@Model.FoundMovies[i].Id" />
+            <input type="hidden" name="FoundMovies[@i].Name" value="@Model.FoundMovies[i].Name" />
+        }
+    }
+
+    @if (Model.FoundCustomers != null)
+    {
+        for (int i = 0; i < Model.FoundCustomers.Count; i++)
+        {
+            <input type="hidden" name="FoundCustomers[@i].Id" value="@Model.FoundCustomers[i].Id" />
+            <input type="hidden" name="FoundCustomers[@i].Name" value="@Model.FoundCustomers[i].Name" />
+        }
+    }
+
 </form>
