@@ -15,6 +15,8 @@ namespace VideoRent.ViewModels
         public bool SearchByName { get; set; }
         [Display(Name = "Search by Genre")]
         public bool SearchByGenre { get; set; }
-        public IEnumerable<Customer> FoundCustomers { get; set; }
+        public List<Customer> FoundCustomers { get; set; }
+        public List<Movie> FoundMovies { get; set; }
+
     }
 }
