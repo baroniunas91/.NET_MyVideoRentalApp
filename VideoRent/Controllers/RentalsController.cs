@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using VideoRent.Data;
 using VideoRent.Models;
@@ -68,6 +69,22 @@ namespace VideoRent.Controllers
                 return NotFound();
 
             return View(rental);
+        }
+
+        public ActionResult Return(int id)
+        {
+            var rental = _context.Rentals.Include(c => c.Customer).Include(x => x.Movie).SingleOrDefault(c => c.Id == id);
+
+            if (rental == null)
+            {
+                return NotFound();
+            }
+            rental.ReturnedOn = DateTime.Now;
+            rental.Returned = true;
+            rental.Movie.NumberAvailable += 1;
+            _context.SaveChanges();
+
+            return View("Details", rental);
         }
     }
 }
