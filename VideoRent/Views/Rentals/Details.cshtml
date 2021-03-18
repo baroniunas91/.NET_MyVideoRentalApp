@@ -1,0 +1,20 @@
+﻿@model VideoRent.Models.Rental
+
+@{
+    ViewBag.Title = "Rental Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Rental Info</h2>
+<br />
+<ul>
+    <li><b>Number: </b>@Model.Id</li>
+    <li><b>Rented on: </b>@Model.RentedOn.ToString("yyyy-MM-dd H:m:s")</li>
+    <li><b>Customer: </b>@Model.Customer.Name</li>
+    <li><b>Movie: </b>@Model.Movie.Name</li>
+    <li><b>Returned: </b>@(Model.Returned ? "Yes" : "No")</li>
+    @if (Model.ReturnedOn != null)
+    {
+        <li><b>Returned on: </b>@Model.Returned</li>
+    }
+</ul>
