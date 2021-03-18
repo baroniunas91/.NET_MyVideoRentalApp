@@ -21,7 +21,7 @@ namespace VideoRent.Controllers
 
         public IActionResult Index()
         {
-            var movies = _context.Movies.Include(m => m.Genre).OrderBy(m => m.Name).ToList();
+            var movies = _context.Movies.Include(m => m.Genre).OrderBy(m => m.Genre.Name).ToList();
 
             return View(movies);
         }
