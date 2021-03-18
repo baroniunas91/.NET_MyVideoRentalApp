@@ -98,12 +98,15 @@ namespace VideoRent.Controllers
             return View("CustomerForm", viewModel);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, bool? delErr)
         {
             var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
                 return NotFound();
+
+            if (delErr ?? false)
+                ModelState.AddModelError("HasUnreturnedRentals", "The custumer has unreturned videos.");
 
             return View(customer);
         }
@@ -116,6 +119,14 @@ namespace VideoRent.Controllers
             {
                 return NotFound();
             }
+
+            if(_context.Rentals.Include(r => r.Customer).Where(r => r.Customer.Id == customer.Id && !r.Returned).Any())
+            {
+                return RedirectToAction("Details", new { id, delErr = true });
+            }
+
+            var dependantRentals = _context.Rentals.Include(r => r.Customer).Where(r => r.Customer.Id == customer.Id);
+            _context.RemoveRange(dependantRentals);
 
             _context.Customers.Remove(customer);
 
