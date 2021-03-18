@@ -59,5 +59,15 @@ namespace VideoRent.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Rentals");
         }
+
+        public ActionResult Details(int id)
+        {
+            var rental = _context.Rentals.Include(c => c.Customer).Include(x => x.Movie).SingleOrDefault(c => c.Id == id);
+
+            if (rental == null)
+                return NotFound();
+
+            return View(rental);
+        }
     }
 }
