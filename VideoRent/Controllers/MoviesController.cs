@@ -31,10 +31,10 @@ namespace VideoRent.Controllers
             var movieFormViewModel = new MovieFormViewModel
             {
                 Movie = new Movie(),
-                Genres = _context.Genres.ToList()
+                Genres = _context.Genres.ToList(),
+                TitleMessage = "New Movie"
             };
 
-            ViewBag.TitleMessage = "New Movie";
             return View("MovieForm", movieFormViewModel);
         }
 
@@ -46,7 +46,8 @@ namespace VideoRent.Controllers
                 var viewModel = new MovieFormViewModel
                 {
                     Movie = movie,
-                    Genres = _context.Genres.ToList()
+                    Genres = _context.Genres.ToList(),
+                    TitleMessage = TempData["TitleMessage"].ToString()
                 };
                 return View("MovieForm", viewModel);
             }
@@ -96,10 +97,10 @@ namespace VideoRent.Controllers
             var movieFormViewModel = new MovieFormViewModel
             {
                 Movie = movie,
-                Genres = _context.Genres.ToList()
+                Genres = _context.Genres.ToList(),
+                TitleMessage = "Edit Movie"
             };
 
-            ViewBag.TitleMessage = "Edit Movie";
             return View("MovieForm", movieFormViewModel);
         }
     }

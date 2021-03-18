@@ -13,5 +13,6 @@ namespace VideoRent.ViewModels
         public IEnumerable<Genre> Genres { get; set; }
         [Required]
         public Movie Movie { get; set; }
+        public string TitleMessage { get; set; }
     }
 }
