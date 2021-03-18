@@ -30,9 +30,9 @@ namespace VideoRent.Controllers
             }
             else if(searchButton == "movie")
             {
-                if(!searchViewModel.SearchByName && !searchViewModel.SearchByGenre)
+                if(searchViewModel.SearchByName == searchViewModel.SearchByGenre)
                 {
-                    ModelState.AddModelError("OneOfCheckBoxesChecked", "Please select at least one search criteria");
+                    ModelState.AddModelError("OneOfCheckBoxesChecked", "Please select one search criteria");
                     return View(searchViewModel);
                 }
 
