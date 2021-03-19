@@ -73,7 +73,7 @@ namespace VideoRent.Controllers
             return RedirectToAction("Details", "Movies", new { Id = movie.Id });         
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, bool? delErr)
         {
             var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
 
@@ -81,6 +81,9 @@ namespace VideoRent.Controllers
             {
                 return NotFound();
             }
+
+            if (delErr ?? false)
+                ModelState.AddModelError("HasUnreturnedRentals", "This movie has unreturned copies.");
 
             return View(movie);
         }
@@ -102,6 +105,28 @@ namespace VideoRent.Controllers
             };
 
             return View("MovieForm", movieFormViewModel);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
+
+            if(movie == null)
+            {
+                return NotFound();
+            }
+
+            if(_context.Rentals.Include(r => r.Movie).Where(r => r.Movie.Id == movie.Id && !r.Returned).Any())
+            {
+                return RedirectToAction("Details", new { id, delErr = true });
+            }
+
+            var dependantRentals = _context.Rentals.Include(r => r.Movie).Where(r => r.Movie.Id == movie.Id);
+            _context.RemoveRange(dependantRentals);
+            _context.Movies.Remove(movie);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
