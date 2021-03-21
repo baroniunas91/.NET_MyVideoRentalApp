@@ -23,6 +23,7 @@
         <li><b>Subscribed to Newsletter: </b>No</li>
     }
 </ul>
+<p style="font-weight:bold; margin:30px 0px 10px">@Html.ActionLink("View history", "History", "Customers", new { id = Model.Id }, null)</p>
 <p>
     @Html.ActionLink("Edit", "Edit", "Customers", new { id = Model.Id }, new { @class = "btn btn-primary" })
     @Html.ActionLink("Delete", "Delete", "Customers", new { id = Model.Id }, new { @class = "btn btn-primary" })

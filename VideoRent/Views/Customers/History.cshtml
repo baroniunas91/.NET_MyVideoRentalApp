@@ -1,0 +1,38 @@
+﻿@model VideoRent.ViewModels.CustomerHistoryViewModel
+@{
+    ViewBag.Title = "Rentals History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Rentals History</h2>
+<br />
+<br />
+<h3>@Model.Customer.Name</h3>
+@if (!Model.CustomerRentals.Any())
+{
+    <p style="font-weight:bold">This customer has no rentals yet.</p>
+}
+else
+{
+    <table class="table table-bordered table-hover" style="width:40%">
+        <thead>
+            <tr>
+                <th style="width: 10%; text-align: center">Rental No</th>
+                <th style="width:30%; text-align:center">Rented On</th>
+                <th style="width:30%; text-align:center">Movie</th>
+                <th style="width:15%; text-align:center">Has Returned</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rental in Model.CustomerRentals)
+            {
+            <tr>
+                <td>@Html.ActionLink(rental.Id.ToString(), "Details", "Rentals", new { id = rental.Id }, null)</td>
+                <td style="text-align: center">@rental.RentedOn.ToString("yyyy-MM-dd")</td>
+                <td style="text-align: center">@rental.Movie.Name</td>
+                <td style="text-align: center">@(rental.Returned ? "Yes" : "No")</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -76,7 +76,7 @@ namespace VideoRent.Controllers
 
                 _context.SaveChanges();
 
-                return RedirectToAction("Details", "Customers", new { id = customerInDb.Id } );
+                return RedirectToAction("Details", "Customers", new { id = customerInDb.Id });
             }
         }
 
@@ -120,7 +120,7 @@ namespace VideoRent.Controllers
                 return NotFound();
             }
 
-            if(_context.Rentals.Include(r => r.Customer).Where(r => r.Customer.Id == customer.Id && !r.Returned).Any())
+            if (_context.Rentals.Include(r => r.Customer).Where(r => r.Customer.Id == customer.Id && !r.Returned).Any())
             {
                 return RedirectToAction("Details", new { id, delErr = true });
             }
@@ -135,5 +135,18 @@ namespace VideoRent.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult History(int id)
+        {
+            var history = _context.Rentals.Include(c => c.Customer).Include(x => x.Movie).Where(x => x.Customer.Id == id).ToList();
+            var customer = _context.Customers.Where(x => x.Id == id).SingleOrDefault();
+            
+            var viewModel = new CustomerHistoryViewModel()
+            {
+                Customer = customer,
+                CustomerRentals = history
+            };
+
+            return View("History", viewModel);
+        }
     }
 }
