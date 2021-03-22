@@ -190,8 +190,7 @@ namespace VideoRent.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("Birthdate")
-                        .IsRequired();
+                    b.Property<DateTime>("Birthdate");
 
                     b.Property<bool>("IsSubscribedToNewsletter");
 
@@ -279,8 +278,6 @@ namespace VideoRent.Data.Migrations
 
                     b.Property<int?>("MovieId");
 
-                    b.Property<int?>("RentalStatusId");
-
                     b.Property<DateTime>("RentedOn");
 
                     b.Property<bool>("Returned");
@@ -293,22 +290,7 @@ namespace VideoRent.Data.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.HasIndex("RentalStatusId");
-
                     b.ToTable("Rentals");
-                });
-
-            modelBuilder.Entity("VideoRent.Models.RentalStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RentalStatuses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -381,10 +363,6 @@ namespace VideoRent.Data.Migrations
                     b.HasOne("VideoRent.Models.Movie", "Movie")
                         .WithMany()
                         .HasForeignKey("MovieId");
-
-                    b.HasOne("VideoRent.Models.RentalStatus", "RentalStatus")
-                        .WithMany()
-                        .HasForeignKey("RentalStatusId");
                 });
 #pragma warning restore 612, 618
         }
