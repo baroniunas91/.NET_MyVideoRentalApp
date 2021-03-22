@@ -15,5 +15,7 @@ namespace VideoRent.Models
         public DateTime? ReturnedOn { get; set; }
         public Movie Movie { get; set; }
         public Customer Customer { get; set; }
+        public RentalStatus RentalStatus { get; set; }
+        public int RentalStatusId { get; set; }
     }
 }
