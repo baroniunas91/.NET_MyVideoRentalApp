@@ -56,7 +56,6 @@ namespace VideoRent.Controllers
             movie.NumberAvailable -= 1;
             rental.Customer = customer;
             rental.Movie = movie;
-            rental.RentalStatusId = 2;
             _context.Rentals.Add(rental);
             _context.SaveChanges();
             return RedirectToAction("Index", "Rentals");
@@ -83,33 +82,9 @@ namespace VideoRent.Controllers
             rental.ReturnedOn = DateTime.Now;
             rental.Returned = true;
             rental.Movie.NumberAvailable += 1;
-            rental.RentalStatusId = 1;
             _context.SaveChanges();
 
             return View("Details", rental);
-        }
-
-        public ActionResult Filter(int? rentalStatusId, int? movieId)
-        {
-            var filteredRentals = _context.Rentals.Include(r => r.Customer).Include(r => r.Movie).ToList();
-
-            if (rentalStatusId != null)
-            {
-                filteredRentals = filteredRentals.Where(r => r.RentalStatusId == rentalStatusId).ToList();
-            }
-
-            if (movieId != null)
-            {
-                filteredRentals = filteredRentals.Where(r => r.Movie.Id == movieId).ToList();
-            }
-
-            var viewmodel = new FilterRentalsViewModel
-            {
-                AllMovies = _context.Movies,
-                FilteredRentals = filteredRentals,
-                RentalStatuses = _context.RentalStatuses
-            };
-            return View(viewmodel);
         }
     }
 }
