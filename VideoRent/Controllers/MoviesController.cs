@@ -128,5 +128,39 @@ namespace VideoRent.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Filter(int? genreId, int? movieId, string input, string filterButton)
+        {
+            FilterMoviesViewModel viewmodel = new FilterMoviesViewModel()
+            {
+                Genres = _context.Genres,
+                Movies = _context.Movies,
+            };
+
+            if (filterButton != "filter") {
+                return View(viewmodel);
+            }
+
+            if(String.IsNullOrEmpty(input) && genreId != 1 && genreId != 3)
+            {
+                ModelState.AddModelError("fieldempty", "Text field is required unless Family or Comedy genre is selected.");
+                return View(viewmodel);
+            }
+
+            IEnumerable<Rental> foundRentals = _context.Rentals.Include(r => r.Customer).Include(r => r.Movie).ThenInclude(m => m.Genre).ToList();
+            
+            if(movieId != null)
+            {
+                foundRentals = foundRentals.Where(r => r.Movie.Id == movieId).ToList();
+            }
+            if(genreId != null)
+            {
+                foundRentals = foundRentals.Where(r => r.Movie.Genre.Id == genreId).ToList();
+            }
+
+            viewmodel.FoundRentals = foundRentals;
+
+            return View(viewmodel);
+        }
     }
 }
