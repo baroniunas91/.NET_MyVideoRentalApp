@@ -16,6 +16,6 @@ namespace VideoRent.Models
         public Movie Movie { get; set; }
         public Customer Customer { get; set; }
         public RentalStatus RentalStatus { get; set; }
-        public int RentalStatusId { get; set; }
+        public int? RentalStatusId { get; set; }
     }
 }
