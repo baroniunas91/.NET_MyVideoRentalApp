@@ -1,0 +1,71 @@
+﻿@model VideoRent.ViewModels.AccountsViewModel
+@{
+    ViewBag.Title = "Account Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="margin-bottom:25px;">Account Information</h2>
+
+@*<form style="width:20%" class="form-group" action="/" method="post">
+        <label asp-for="@Model.FirstOrDefault().Name">Customer</label>
+        <select name="id" style="margin:0px 0px 15px" class="form-control">
+            <option value="0" selected>Select customer</option>
+            @foreach (var customer in Model)
+            {
+                <option value="@customer.Id">@customer.Name</option>
+            }
+        </select>
+        <button class="btn btn-primary" type="submit" asp-controller="Accounts" asp-action="Show">Show</button>
+    </form>*@
+
+@using (Html.BeginForm("Show", "Accounts"))
+{
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.CustomerDto.CustomerId)
+        @Html.DropDownListFor(m => m.CustomerDto.CustomerId, new SelectList(@Model.Customers, "Id", "Name"), "Select customer", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CustomerDto.CustomerId, "", new { @class = "text-danger" })
+    </div>
+    <button type="submit" class="btn btn-primary">Show</button>
+}
+@if (Model.CustomerDto.CustomerId != 0)
+{
+    <ul style="margin-top:20px">
+        <li><b>Membership Type: </b>@Model.Customer.MembershipType.Name</li>
+        <li><b>Discount Rate: </b>@Model.Customer.MembershipType.DiscountRate%</li>
+    </ul>
+    if (Model.Rentals.Any())
+    {
+        <h3>Billing Info</h3>
+        <table class="table table-bordered table-hover" style="width:40%">
+            <thead>
+                <tr>
+                    <th style="width: 10%; text-align: center">Rental No.</th>
+                    <th style="width:20%; text-align:center">Rental Price (Eur)</th>
+                    <th style="width:20%; text-align:center">Discount %</th>
+                    <th style="width:20%; text-align:center">Sum (Eur)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var rental in Model.Rentals)
+                {
+                    <tr>
+                        <td>@rental.Id</td>
+                        <td>@rental.Movie.Genre.Price</td>
+                        <td>@rental.Customer.MembershipType.DiscountRate</td>
+                        <td>@rental.Sum</td>
+                    </tr>
+                }
+                <tr>
+                    <td>Total:</td>
+                    <td></td>
+                    <td></td>
+                    <td>@Model.RentalsTotalSum</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Customer don't have any rentals yet.</p>
+    }
+}
