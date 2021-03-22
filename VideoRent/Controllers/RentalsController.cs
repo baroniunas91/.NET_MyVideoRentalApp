@@ -51,11 +51,12 @@ namespace VideoRent.Controllers
             }
 
             var rental = new Rental();
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == rentalDto.CustomerId);
-            var movie = _context.Movies.SingleOrDefault(c => c.Id == rentalDto.MovieId);
+            var customer = _context.Customers.Include(x => x.MembershipType).SingleOrDefault(c => c.Id == rentalDto.CustomerId);
+            var movie = _context.Movies.Include(x => x.Genre).SingleOrDefault(c => c.Id == rentalDto.MovieId);
             movie.NumberAvailable -= 1;
             rental.Customer = customer;
             rental.Movie = movie;
+            rental.Sum = movie.Genre.Price * (100 - customer.MembershipType.DiscountRate) / 100;
             _context.Rentals.Add(rental);
             _context.SaveChanges();
             return RedirectToAction("Index", "Rentals");
