@@ -1,0 +1,59 @@
+﻿@model VideoRent.ViewModels.FilterMoviesViewModel
+@{
+    ViewBag.Title = "Filter Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Filter Movies</h2>
+
+<br />
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+<form method="get">
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Genres)
+        @Html.DropDownListFor(m => m.GenreId, new SelectList(Model.Genres, "Id", "Name"), "All", new { @class = "form-control" })
+    </div>
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Movies)
+        @Html.DropDownListFor(m => m.MovieId, new SelectList(Model.Movies, "Id", "Name"), "All", new { @class = "form-control" })
+    </div>
+    <div class="form-group" style="width:20%">
+        @Html.LabelFor(m => m.Input)
+        @Html.TextBoxFor(m => m.Input, new { @class = "form-control" })
+    </div>
+    <button name="FilterButton" value="filter" type="submit">Filter</button>
+</form>
+
+<br />
+
+@if (Model.FoundRentals != null && Model.FoundRentals.Any())
+{
+    <table class="table-bordered table-hover table-condensed" style="width:40%">
+        <thead>
+            <tr>
+                <th style="text-align:center" width="20%">Rented On</th>
+                <th style="text-align:center" width="65%">Customer</th>
+                <th style="text-align:center" width="15%">Is Returned</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rental in Model.FoundRentals)
+            {
+                <tr>
+                    <td style="text-align:center">@rental.RentedOn</td>
+                    <td style="text-align:center">@rental.Customer.Name</td>
+                    <td style="text-align:center">@(rental.Returned ? "Yes" : "No") </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    @if (ViewContext.HttpContext.Request.Query["FilterButton"] == "filter" && ViewData.ModelState.IsValid)
+    {
+        <b>No records found.</b>
+    }
+}
