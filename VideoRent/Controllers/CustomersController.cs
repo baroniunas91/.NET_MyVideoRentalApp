@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using VideoRent.Data;
+using VideoRent.Functions;
 using VideoRent.Models;
 using VideoRent.ViewModels;
 
@@ -59,9 +61,7 @@ namespace VideoRent.Controllers
 
             if (customer.Id == 0)
             {
-                _context.Customers.Add(customer);
-
-                _context.SaveChanges();
+                FunctionsSP.SaveNewCustomer(_context, customer);
 
                 return RedirectToAction("Index", "Customers");
             }
