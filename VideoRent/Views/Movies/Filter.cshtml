@@ -13,7 +13,7 @@
 <form method="get">
     <div class="form-group" style="width:20%">
         @Html.LabelFor(m => m.Genres)
-        @Html.DropDownListFor(m => m.GenreId, new SelectList(Model.Genres, "Id", "Name"), "All", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.GenreId, new SelectList(Model.Genres, "Id", "Name"), "All", new { @class = "form-control", @onchange = "FillMovies()" })
     </div>
     <div class="form-group" style="width:20%">
         @Html.LabelFor(m => m.Movies)
@@ -25,6 +25,7 @@
     </div>
     <button name="FilterButton" value="filter" type="submit">Filter</button>
 </form>
+
 
 <br />
 
@@ -56,4 +57,42 @@ else
     {
         <b>No records found.</b>
     }
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(
+            function () {
+                var anyMovies = @Model.Movies.Any().ToString().ToLowerInvariant();
+                if (!anyMovies) {
+                    $("#MovieId").html("");
+                    $("#MovieId").append(
+                        $('<option></option>').val(0).html("None"));
+                }
+            }
+        );
+        function FillMovies() {
+            var genreId = $('#GenreId').val();
+            $.ajax({
+                url: '/Movies/FillMovies',
+                type: "GET",
+                dataType: "JSON",
+                data: { genreId: genreId },
+                success: function (movies) {
+                    $("#MovieId").html(""); // clear before appending new list
+                    if (!$.trim(movies)) {    // if returned data empty
+                        $("#MovieId").append(
+                            $('<option></option>').val(0).html("None"));
+                    } else {
+                        $("#MovieId").append(
+                            $('<option></option>').val(null).html("All"));
+                        $.each(movies, function (i, movie) {
+                            $("#MovieId").append(
+                                $('<option></option>').val(movie.Id).html(movie.Name));
+                        });
+                    }
+                }
+            });
+        }
+    </script>
 }

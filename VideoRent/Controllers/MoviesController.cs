@@ -156,11 +156,22 @@ namespace VideoRent.Controllers
             if(genreId != null)
             {
                 foundRentals = foundRentals.Where(r => r.Movie.Genre.Id == genreId).ToList();
+                viewmodel.Movies = _context.Movies.Where(m => m.GenreId == genreId);
             }
 
             viewmodel.FoundRentals = foundRentals;
 
             return View(viewmodel);
+        }
+
+        public IActionResult FillMovies(int? genreId)
+        {
+            IEnumerable<Movie> movies = _context.Movies;
+
+            if (genreId != null)
+                movies = _context.Movies.Where(m => m.GenreId == genreId);
+
+            return Json(movies, new Newtonsoft.Json.JsonSerializerSettings());
         }
     }
 }
