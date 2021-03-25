@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VideoRent.Data;
@@ -147,6 +149,47 @@ namespace VideoRent.Controllers
             };
 
             return View("History", viewModel);
+        }
+
+        public ActionResult ExportExcel()
+        {
+            var customers = _context.Customers.Include(c => c.MembershipType).OrderBy(x => x.Id).ToList();
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Customers");
+                var currentRow = 1;
+
+                #region Header
+                worksheet.Cell(currentRow, 1).Value = "Id";
+                worksheet.Cell(currentRow, 2).Value = "Customer Name";
+                worksheet.Cell(currentRow, 3).Value = "Discount Rate";
+                worksheet.Cell(currentRow, 4).Value = "Membership Type";
+                #endregion
+
+                #region Body
+                foreach (var customer in customers)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = customer.Id;
+                    worksheet.Cell(currentRow, 2).Value = customer.Name;
+                    worksheet.Cell(currentRow, 3).Value = customer.MembershipType.DiscountRate;
+                    worksheet.Cell(currentRow, 4).Value = customer.MembershipType.Name;
+                }
+                #endregion
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "Customers.xlsx"
+                        );
+                }
+            }
         }
     }
 }
